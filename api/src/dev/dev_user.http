@@ -1,0 +1,77 @@
+//************************************************************************************
+//  GETリクエスト || application/json ... htmlでのエラーを返されないようにする
+//************************************************************************************
+
+### ユーザー情報取得
+GET http://localhost:8000/api/users/show?user_id=1
+Accept: application/json
+
+### 所持アイテムリスト取得
+GET http://localhost:8000/api/users/item/show?user_id=1&type=6
+Accept: application/json
+
+### 受信メールリスト取得
+GET http://localhost:8000/api/users/mail/show?user_id=21
+Accept: application/json
+
+### 所持アイテムリスト取得
+GET http://localhost:8000/api/users/item/show?user_id=1
+Accept: application/json
+
+//**********************************************************
+//  POSTリクエスト || Content-Type ... リクエスト本体がJSONという宣言
+//**********************************************************
+
+### ユーザー情報登録
+POST http://localhost:8000/api/users/store
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "TEST"
+}
+
+### ユーザー情報更新
+POST https://localhost:8000/api/users/update
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id": 6,
+    "name": "かいと",
+    "title_id": 0,
+    "stage_id": 0,
+    "icon_id": 1
+}
+
+### 所持アイテム更新
+POST http://localhost:8000/api/users/item/update
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id": 16,
+    "item_id": 34,
+    "option_id": 1,
+    "allie_amount": 1
+}
+
+### 受信メール開封
+POST http://localhost:8000/api/users/mail/update
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id": 21,
+    "user_mail_id": 11
+}
+
+### 受信メール削除
+POST http://localhost:8000/api/users/mail/destroy
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id": 3,
+    "user_mail_id": 1
+}

@@ -23,7 +23,7 @@ Accept: application/json
 //**********************************************************
 
 ### ユーザー情報登録
-POST http://localhost:8000/api/users/store
+POST http://ikusei.japaneast.cloudapp.azure.com/api/users/store
 Content-Type: application/json
 Accept: application/json
 

@@ -65,25 +65,11 @@ class UserController
         $user = User::find($request->id);
 
         if (!empty($user)) {
-            // 設定しているアチーブメントの称号を取得する
-            $title = '';
-            if ($user->title_id > 0) {
-                $item = $user->gettitle()->selectRaw('name')->first();
-                if (!empty($item->name)) {
-                    $title = $item->name;
-                }
-            }
-
-            // 合計スコアを取得する
-            $total_score = $user->totalscore()->first() == null ? 0 : $user->totalscore()->pluck('total_score')->first();
 
             $userData = [
                 [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'title' => $title ?? '',
-                    'total_score' => $total_score ?? 0,
-                    'stage_id' => $user->stage_id
                 ]
             ];
         }

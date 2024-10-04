@@ -27,9 +27,6 @@
                     <tr>
                         <th>ID</th>
                         <th>ユーザー名</th>
-                        <th>称号</th>
-                        <th>トータルスコア</th>
-                        <th>最新のステージ</th>
                     </tr>
                     </thead>
                     <tbody class="table-light">
@@ -38,9 +35,6 @@
                             <tr>
                                 <td>{{$data['id']}}</td>
                                 <td>{{$data['name']}}</td>
-                                <td>{{$data['title']}}</td>
-                                <td>{{$data['total_score']}}</td>
-                                <td>{{$data['stage_id']}}</td>
                             </tr>
                         @endforeach
                     @endif

@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Achievement;
-use App\Models\FollowingUser;
 use App\Models\Item;
 use App\Models\User;
-use App\Models\UserAchievement;
 use Illuminate\Http\Request;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -31,25 +28,10 @@ class UserController
             $responseData = [];
 
             for ($i = 0; $i < count($users); $i++) {
-                // 設定しているアチーブメントの称号を取得する
-                $title = '';
-                if ($users[$i]->title_id > 0) {
-                    $item = $users[$i]->gettitle()->selectRaw('name')->first();
-                    if (!empty($item->name)) {
-                        $title = $item->name;
-                    }
-                }
-
-                // 合計スコアを取得する
-                $total_score = $users[$i]->totalscore()->first() == null ? 0 : $users[$i]->totalscore()->pluck('total_score')->first();
-
                 // データを格納する
                 $array = [
                     'id' => $users[$i]['id'],
                     'name' => $users[$i]['name'],
-                    'title' => $title,
-                    'total_score' => $total_score,
-                    'stage_id' => $users[$i]['stage_id']
                 ];
                 $responseData[$i] = $array;
             }
@@ -60,10 +42,8 @@ class UserController
 
             return view('users/index', ['userData' => $view_name, 'requestID' => $request->id]);
         }
-
         // ユーザーIDを指定して検索
         $user = User::find($request->id);
-
         if (!empty($user)) {
 
             $userData = [

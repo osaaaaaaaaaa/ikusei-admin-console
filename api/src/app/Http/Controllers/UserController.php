@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserItemResource;
-use App\Http\Resources\UserMailResource;
-use App\Models\Attached_Item;
 use App\Models\Item;
-use App\Models\ItemLogs;
-use App\Models\Mail;
-use App\Models\MailLogs;
 use App\Models\NGWord;
 use App\Models\User;
 use App\Models\UserItem;
-use App\Models\UserMail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -51,42 +44,20 @@ class UserController extends Controller
 
         try {
             // トランザクション処理
-            $user = DB::transaction(function () use ($request) {
+            $userInfo = DB::transaction(function () use ($request) {
                 // 登録処理
                 $user = User::create([
                     'name' => $request->name,
-                    'title_id' => 0,
-                    'stage_id' => 1,
-                    'icon_id' => 1,
                 ]);
 
-                // 初期アイテム取得
-                $items = Item::whereIn('id', [1, 3])
-                    ->orWhere(function ($query) use ($request) {
-                        $query->where('id', '>=', 10)
-                            ->where('id', '<=', 27);
-                    })->get();
+                // APIトークンを発行する
+                //$token = $user->createToken($request->name)->plainTextToken;
 
-                foreach ($items as $item) {
-                    // 所持アイテムに追加
-                    UserItem::create([
-                        'user_id' => $user->id,
-                        'item_id' => $item->id,
-                        'amount' => 1,
-                    ]);
-
-                    // アイテムログテーブル登録処理
-                    ItemLogs::create([
-                        'user_id' => $user->id,
-                        'item_id' => $item->id,
-                        'option_id' => 1,
-                        'allie_count' => 1
-                    ]);
-                }
-
-                return $user;
+                return [$user];
             });
-            return response()->json(['user_id' => $user->id]);
+
+            return response()->json(['user_info' => $userInfo]);
+
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

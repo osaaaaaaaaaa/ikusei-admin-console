@@ -1,11 +1,9 @@
 <?php
 
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\LogsController;
-use App\Http\Controllers\MailController;
+use App\Http\Controllers\MonsterController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\NoCacheMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // ミドルウェアのルートを通す(キャッシュを保存しない)
@@ -29,10 +27,17 @@ Route::middleware([NoCacheMiddleware::class])->group(function () {
             Route::post('/mail/destroy', 'destroyMail')->name('mail.destroy');
         });
 
-    // [ マスタデータ ] ##################################################################################################
+    // [ アイテム ] #####################################################################################################
+    Route::prefix('items')->name('items.')->controller(ItemController::class)
+        ->group(function () {
+            // アイテム情報取得
+            Route::get('/show', 'show')->name('show');
+        });
 
-    // メール取得
-    Route::get('mail', [MailController::class, 'index'])->name('mails.index');
-    // アイテム取得
-    Route::get('item', [ItemController::class, 'index'])->name('items.index');
+    // [ モンスター ] ####################################################################################################
+    Route::prefix('monsters')->name('monsters.')->controller(MonsterController::class)
+        ->group(function () {
+            // モンスター情報取得
+            Route::get('/show', 'show')->name('show');
+        });
 });

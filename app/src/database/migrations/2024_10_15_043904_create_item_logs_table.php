@@ -9,10 +9,10 @@ return new class extends Migration {
     {
         Schema::create('item_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('Item_id');
+            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('item_id');
             $table->integer('quantity');        // 数量
-            $table->boolean('action_flag');     // 操作フラグ [false:消費 true:取得]
+            $table->boolean('use_flag');        // 操作フラグ [true:消費 false:取得]
             $table->timestamps();
         });
     }

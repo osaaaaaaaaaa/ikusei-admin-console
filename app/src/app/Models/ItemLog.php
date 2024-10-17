@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ItemLog extends Model
 {
-    protected function casts(): array
-    {
-        return [
-            'action_flag' => 'boolean',
-        ];
-    }
+    // $guardedには更新しないカラムを指定する
+    protected $guarded = [
+        'id',
+    ];
 }

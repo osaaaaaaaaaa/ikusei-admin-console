@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
 
             // ユニーク制約設定
-            $table->unique('user_id','item_id');
+            $table->unique(['user_id','item_id']);
         });
     }
 

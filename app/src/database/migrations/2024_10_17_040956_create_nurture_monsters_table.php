@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->tinyInteger('state')->index();          // 育成状態 [1:卵 2:育成中 3:育成完了 4:死亡]
             $table->timestamps();
 
-            $table->index('user_id','state');
+            $table->index(['user_id','state']);
         });
     }
 

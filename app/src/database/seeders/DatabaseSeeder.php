@@ -14,11 +14,16 @@ class DatabaseSeeder extends Seeder
     {
         // マスターデータ(初期データ)挿入
         $this->call(AccountsTableSeeder::class);
-        $this->call(UserTableSeeder::class);
-        $this->call(ItemTableSeeder::class);
-        $this->call(UserItemTableSeeder::class);
+        $this->call(ExerciseLogTableSeeder::class);
         $this->call(ItemLogsTableSeeder::class);
+        $this->call(ItemTableSeeder::class);
+        $this->call(MealLogTableSeeder::class);
+        $this->call(MonsterTableSeeder::class);
         $this->call(NGWordTableSeeder::class);
+        $this->call(NurtureMonsterTableSeeder::class);
+        $this->call(SupplyLogTableSeeder::class);
         $this->call(UserInfoTableSeeder::class);
+        $this->call(UserItemTableSeeder::class);
+        $this->call(UserTableSeeder::class);
     }
 }

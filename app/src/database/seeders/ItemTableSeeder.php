@@ -9,16 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemTableSeeder extends Seeder
 {
-    const ICON_CNT_MAX = 9;
-
-    /*[アイテムタイプ]
-    1:アイコン,
-    2:称号,
-    3:お助けアイテム,
-    4:救難信号解放,
-    5:救難信号の上限値UP,
-    6:ポイント*/
-
     /**
      * Run the database seeds.
      */
@@ -41,9 +31,8 @@ class ItemTableSeeder extends Seeder
 
             Item::create([
                 'name' => $values[0],
-                'type' => (int)$values[1],
-                'effect' => (int)$values[2],
-                'description' => $values[3]
+                'text' => $values[1],
+                'value' => (int)$values[2],
             ]);
         }
     }

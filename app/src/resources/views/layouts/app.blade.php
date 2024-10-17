@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
     <div class="container-fluid">
-        <a class="navbar-brand text-warning fw-bold fs-4" href="{{ route('home.index')}}">いくせいっち！管理ツール</a>
+        <a class="navbar-brand text-warning fw-bold fs-4" href="{{ route('home.index')}}">そだてるっち！管理ツール</a>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 {{--マスタデータ--}}

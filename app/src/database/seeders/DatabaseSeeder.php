@@ -17,11 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UserTableSeeder::class);
         $this->call(ItemTableSeeder::class);
         $this->call(UserItemTableSeeder::class);
-        $this->call(MailTableSeeder::class);
-        $this->call(AttachedItemTableSeeder::class);
-        $this->call(UserMailTableSeeder::class);
         $this->call(ItemLogsTableSeeder::class);
-        $this->call(MailLogsTableSeeder::class);
         $this->call(NGWordTableSeeder::class);
+        $this->call(UserInfoTableSeeder::class);
     }
 }

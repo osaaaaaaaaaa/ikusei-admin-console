@@ -24,23 +24,11 @@ class User extends Model
             ->withPivot('amount');  // 中間テーブルのカラムを取得
     }
 
-    // 受信メールのリレーション
-    public function mails()
-    {
-        return $this->hasMany(UserMail::class);
-    }
-
     // アイテムログのリレーション
     public function item_logs()
     {
         return $this->belongsToMany(
             Item::class, 'item_logs', 'user_id', 'item_id')
             ->withPivot('id', 'option_id', 'allie_count', 'created_at');
-    }
-
-    // メールログのリレーション
-    public function mail_logs()
-    {
-        return $this->hasMany(MailLogs::class);
     }
 }

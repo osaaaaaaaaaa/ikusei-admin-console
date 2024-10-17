@@ -23,20 +23,4 @@ class LogsController extends Controller
 
         return view('logs.item', ['user' => $user, 'logs' => $logs ?? null]);
     }
-
-    // メールログ一覧表示
-    public function mail(Request $request)
-    {
-        // モデルを取得する
-        $user = User::find($request->id);
-
-        // ユーザーが存在するかどうか
-        if (!empty($user)) {
-            // リレーション
-            $logs = $user->mail_logs()->paginate(10);
-            $logs->appends(['id' => $request->id]);
-        }
-
-        return view('logs.mail', ['user' => $user, 'logs' => $logs ?? null]);
-    }
 }

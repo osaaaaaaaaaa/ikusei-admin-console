@@ -96,19 +96,4 @@ class UserController
 
         return view('users/item', ['user' => $user, 'items' => $items ?? null]);
     }
-
-    // 受信メール一覧表示
-    public function mail(Request $request)
-    {
-        // モデルを取得する
-        $user = User::find($request->id);
-
-        // リレーション
-        if (!empty($user)) {
-            $mails = $user->mails()->paginate(10);
-            $mails->appends(['id' => $request->id]);
-        }
-
-        return view('users/mail', ['user' => $user, 'mails' => $mails ?? null]);
-    }
 }

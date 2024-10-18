@@ -11,9 +11,9 @@ class UserResource extends JsonResource
     {
         return [
             'name' => $this->name,
-//            'level' => $this->level,
-            'exp' => $this->exp,
-            'created_at' => $this->created_at->format('Y/m/d H:i:s')
+            'food_vol' => $this->food_vol,
+            'facility_lv' => $this->facility_lv,
+            'reroll_num' => $this->reroll_num
         ];
     }
 }

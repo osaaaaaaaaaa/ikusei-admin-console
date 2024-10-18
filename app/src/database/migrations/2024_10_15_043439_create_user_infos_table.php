@@ -10,9 +10,9 @@ return new class extends Migration {
         Schema::create('user_infos', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
-            $table->integer('food_vol');
-            $table->unsignedInteger('facility_lv');
-            $table->unsignedInteger('reroll_num');
+            $table->integer('food_vol')->default(0);
+            $table->unsignedInteger('facility_lv')->default(1);
+            $table->unsignedInteger('reroll_num')->default(0);
             $table->timestamps();
         });
     }

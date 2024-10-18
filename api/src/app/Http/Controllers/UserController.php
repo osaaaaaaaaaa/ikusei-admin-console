@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserInfoResource;
+use App\Http\Resources\UserResource;
 use App\Models\Item;
 use App\Models\NGWord;
 use App\Models\User;
+use App\Models\UserInfo;
 use App\Models\UserItem;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,23 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    // ユーザー情報取得
-    public function show(Request $request)
-    {
-        // バリデーション
-        $validator = Validator::make($request->all(), [
-            'user_id' => ['int', 'min:1'],
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
-        // 存在チェック
-        $user = User::findOrFail($request->user_id);
-
-        return response()->json($user);
-    }
-
     // ユーザー情報登録
     public function store(Request $request)
     {
@@ -49,11 +35,14 @@ class UserController extends Controller
                 $user = User::create([
                     'name' => $request->name,
                 ]);
+                UserInfo::create([
+                    'user_id' => $user->id,
+                ]);
 
                 // APIトークンを発行する
-                //$token = $user->createToken($request->name)->plainTextToken;
+                $token = $user->createToken($request->name)->plainTextToken;
 
-                return [$user];
+                return [$user, $token];
             });
 
             return response()->json(['user_info' => $userInfo]);
@@ -61,6 +50,21 @@ class UserController extends Controller
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    // ユーザー情報取得
+    public function show(Request $request)
+    {
+        // 存在チェック
+        $user = User::findOrFail($request->user()->id);
+        $userInfo = UserInfo::where('user_id', $request->user()->id)->first();
+
+        return response()->json([
+            'name' => $user->name,
+            'food_vol' => $userInfo->food_vol,
+            'facility_lv' => $userInfo->facility_lv,
+            'reroll_num' => $userInfo->reroll_num
+        ]);
     }
 
     // ユーザー情報更新

@@ -19,24 +19,17 @@ Route::middleware([NoCacheMiddleware::class])->group(function () {
         Route::prefix('users')->name('users.')->controller(UserController::class)
             ->group(function () {
                 // ユーザー情報取得・更新
-                Route::get('/show', 'show')->name('show');
                 Route::post('/update', 'update')->name('update');
-
-                // 所持アイテムリスト取得・更新
-                Route::get('/item/show', 'showItem')->name('item.show');
-                Route::post('/item/update', 'updateItem')->name('item.update');
-
-                // メールリスト取得・開封・削除
-                Route::get('/mail/show', 'showMail')->name('mail.show');
-                Route::post('/mail/update', 'updateMail')->name('mail.update');
-                Route::post('/mail/destroy', 'destroyMail')->name('mail.destroy');
+                Route::get('/show', 'show')->name('show');
             });
 
         // [ アイテム ] #####################################################################################################
         Route::prefix('items')->name('items.')->controller(ItemController::class)
             ->group(function () {
                 // アイテム情報取得
+                Route::get('/all', 'all')->name('all');
                 Route::get('/show', 'show')->name('show');
+                Route::post('/update', 'update')->name('update');
             });
 
         // [ モンスター ] ####################################################################################################

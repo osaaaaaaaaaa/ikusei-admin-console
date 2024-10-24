@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->integer('food_vol')->default(0);
             $table->unsignedInteger('facility_lv')->default(1);
             $table->unsignedInteger('reroll_num')->default(0);
+            $table->integer('money')->default(0);
             $table->timestamps();
         });
     }

@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->unsignedInteger('user_id')->index();
             $table->unsignedInteger('item_id');
-            $table->integer('quantity');        // 数量
-            $table->boolean('use_flag');        // 操作フラグ [true:消費 false:取得]
+            $table->integer('ope_num');         // 操作数量
+            $table->integer('result');          // 操作結果
             $table->timestamps();
         });
     }

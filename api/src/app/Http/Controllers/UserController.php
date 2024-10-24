@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\NGWord;
+use App\Models\SupplyLog;
 use App\Models\User;
 use App\Models\UserInfo;
-use App\Models\UserItem;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +20,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
         ]);
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
@@ -58,6 +57,7 @@ class UserController extends Controller
             'food_vol' => ['integer'],
             'facility_lv' => ['integer'],
             'reroll_num' => ['integer'],
+            'money' => ['integer']
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -83,17 +83,25 @@ class UserController extends Controller
             // トランザクション処理
             DB::transaction(function () use ($request, $user, $userInfo) {
                 // 渡ってきたデータごとに上書き処理
-                if (isset($request->name)) {    // 名前
+                if (isset($request->name)) {        // 名前
                     $user->name = $request->name;
                 }
                 if (isset($request->food_vol)) {    // 食料残量
                     $userInfo->food_vol = $request->food_vol;
+
+                    SupplyLog::create([
+                        'user_id' => $request->user()->id,
+                        'get_vol' => $request->food_vol,
+                    ]);
                 }
                 if (isset($request->facility_lv)) { // 施設レベル
                     $userInfo->facility_lv = $request->facility_lv;
                 }
                 if (isset($request->reroll_num)) {  // リロール回数
                     $userInfo->reroll_num = $request->reroll_num;
+                }
+                if (isset($request->money)) {       // 所持金
+                    $userInfo->money = $request->money;
                 }
 
                 // 更新処理
@@ -117,7 +125,8 @@ class UserController extends Controller
             'name' => $user->name,
             'food_vol' => $userInfo->food_vol,
             'facility_lv' => $userInfo->facility_lv,
-            'reroll_num' => $userInfo->reroll_num
+            'reroll_num' => $userInfo->reroll_num,
+            'money' => $userInfo->money
         ]);
     }
 

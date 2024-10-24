@@ -10,4 +10,10 @@ class NurtureMonster extends Model
     protected $guarded = [
         'id',
     ];
+
+    // 所持アイテム
+    public function userInfo()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

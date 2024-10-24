@@ -9,18 +9,18 @@ return new class extends Migration {
     {
         Schema::create('nurture_monsters', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id')->index();    // ユーザーID
-            $table->unsignedInteger('monster_id');          // モンスターID
-            $table->unsignedInteger('parent1_id');          // 親1モンスターID
-            $table->unsignedInteger('parent2_id');          // 親2モンスターID
-            $table->string('name');                         // 名前
-            $table->integer('exp');                         // 所持経験値
-            $table->integer('level');                       // レベル
-            $table->integer('stomach_vol');                 // 満腹度
-            $table->tinyInteger('state')->index();          // 育成状態 [1:卵 2:育成中 3:育成完了 4:死亡]
+            $table->unsignedInteger('user_id')->index();             // ユーザーID
+            $table->unsignedInteger('monster_id');                   // モンスターID
+            $table->unsignedInteger('parent1_id')->default(0); // 親1モンスターID
+            $table->unsignedInteger('parent2_id')->default(0); // 親2モンスターID
+            $table->string('name', 128)->default("");    // 名前
+            $table->integer('exp')->default(0);                // 所持経験値
+            $table->integer('level')->default(1);              // レベル
+            $table->integer('stomach_vol')->default(20);       // 満腹度
+            $table->tinyInteger('state')->index();                  // 育成状態 [1:卵 2:育成中 3:育成完了 4:死亡]
             $table->timestamps();
 
-            $table->index(['user_id','state']);
+            $table->index(['user_id', 'state']);
         });
     }
 

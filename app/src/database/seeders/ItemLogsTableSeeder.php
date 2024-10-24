@@ -12,26 +12,26 @@ class ItemLogsTableSeeder extends Seeder
         ItemLog::create([
             'user_id' => 1,
             'item_id' => 1,
-            'quantity' => 1,
-            'use_flag' => true
+            'ope_num' => 1,
+            'result' => 1
         ]);
         ItemLog::create([
             'user_id' => 2,
             'item_id' => 2,
-            'quantity' => 2,
-            'use_flag' => false
+            'ope_num' => 2,
+            'result' => 2
         ]);
         ItemLog::create([
             'user_id' => 3,
             'item_id' => 3,
-            'quantity' => 3,
-            'use_flag' => true
+            'ope_num' => 3,
+            'result' => 3
         ]);
         ItemLog::create([
             'user_id' => 4,
             'item_id' => 4,
-            'quantity' => 4,
-            'use_flag' => false
+            'ope_num' => 4,
+            'result' => 4
         ]);
     }
 }

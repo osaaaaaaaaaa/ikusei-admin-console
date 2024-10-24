@@ -24,7 +24,7 @@ class User extends Authenticatable
         return $this->belongsToMany(
         // 第二モデル , 第三テーブル(中間テーブル) , 第一モデルと関係のある中間テーブルカラム , 第二モデルと関係のある中間テーブルカラム
             Item::class, 'user_items', 'user_id', 'item_id')
-            ->withPivot('amount');  // 中間テーブルのカラムを取得
+            ->withPivot('quantity');  // 中間テーブルのカラムを取得
     }
 
     // アイテムログのリレーション
@@ -32,6 +32,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             Item::class, 'item_logs', 'user_id', 'item_id')
-            ->withPivot('id', 'option_id', 'allie_count', 'created_at');
+            ->withPivot('quantity', 'use_flag');
     }
 }

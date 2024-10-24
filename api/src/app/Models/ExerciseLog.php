@@ -6,4 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ExerciseLog extends Model
 {
+    // $guardedには更新しないカラムを指定する
+    protected $guarded = [
+        'id',
+    ];
 }

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MonsterResource;
+use App\Http\Resources\NutureMonsterResource;
+use App\Models\Monster;
 use App\Models\NGWord;
+use App\Models\NurtureMonster;
 use App\Models\SupplyLog;
 use App\Models\User;
 use App\Models\UserInfo;
@@ -26,7 +30,7 @@ class UserController extends Controller
 
         try {
             // トランザクション処理
-            $userInfo = DB::transaction(function () use ($request) {
+            $token = DB::transaction(function () use ($request) {
                 // 登録処理
                 $user = User::create([
                     'name' => $request->name,
@@ -38,11 +42,10 @@ class UserController extends Controller
                 // APIトークンを発行する
                 $token = $user->createToken($request->name)->plainTextToken;
 
-                return [$user, $token];
+                return $token;
             });
 
-            return response()->json(['user_info' => $userInfo]);
-
+            return response()->json(['token' => $token], 200);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -130,4 +133,35 @@ class UserController extends Controller
         ]);
     }
 
+    // ユーザー情報取得
+    public function playData(Request $request)
+    {
+        // ユーザー情報取得------------------------------------------------------
+        $user = User::findOrFail($request->user()->id);
+        $info = UserInfo::where('user_id', $request->user()->id)->first();
+        $userInfo = [
+            'name' => $user->name,
+            'food_vol' => $info->food_vol,
+            'facility_lv' => $info->facility_lv,
+            'reroll_num' => $info->reroll_num,
+            'money' => $info->money
+        ];
+
+        // 育成情報取得----------------------------------------------------------
+        $nurtureList = NurtureMonster::where('user_id', $request->user()->id)
+            ->whereIn('state', [1, 2])->get();
+
+        $nurtureInfo = NutureMonsterResource::collection($nurtureList);
+
+        // 各マスター情報取得-----------------------------------------------------
+        // モンスター
+        $monsters = Monster::all();
+        $monsterList = MonsterResource::collection($monsters);
+
+        return response()->json([
+            'user_info' => $userInfo,
+            'nurture_info' => $nurtureInfo,
+            'monster_list' => $monsterList
+        ]);
+    }
 }

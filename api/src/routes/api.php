@@ -20,6 +20,8 @@ Route::middleware([NoCacheMiddleware::class])->group(function () {
             ->group(function () {
                 // ユーザー情報取得
                 Route::get('show', 'show')->name('show');
+                // プレイデータ取得
+                Route::get('play-data', 'playData')->name('play-data');
                 // ユーザー情報取得更新
                 Route::post('update', 'update')->name('update');
             });

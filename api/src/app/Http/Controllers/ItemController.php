@@ -32,7 +32,7 @@ class ItemController extends Controller
 
         $userItem = UserItem::where('user_id', $request->user()->id)->get();
 
-        return response()->json(UserItemResource::collection($userItem));
+        return response()->json(UserItemResource::make($userItem));
     }
 
     // アイテム入手・更新処理

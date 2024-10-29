@@ -17,7 +17,9 @@ class NutureMonsterResource extends JsonResource
             "name" => $this->name,
             "level" => $this->level,
             "exp" => $this->exp,
-            "stomach_vol" => $this->stomach_vol
+            "stomach_vol" => $this->stomach_vol,
+            "state" => $this->state,
+            "created_at" => $this->created_at
         ];
     }
 }

@@ -41,7 +41,7 @@ class MonsterController extends Controller
     public function nurturing(Request $request)
     {
         $monsterList = NurtureMonster::where('user_id', $request->user()->id)
-            ->where('state', 2)->get();
+            ->whereIn('state', [1, 2])->get();
 
         return response()->json(NutureMonsterResource::collection($monsterList));
     }
@@ -90,14 +90,16 @@ class MonsterController extends Controller
             }
         }
 
-        $nutureInfo = NurtureMonster::create([
+        $nurtureInfo = NurtureMonster::create([
             'user_id' => $request->user()->id,
             'monster_id' => 1,
             'name' => $request->name,
             'state' => 2
         ]);
 
-        return response()->json($nutureInfo->id);
+        $nurtureInfo = NurtureMonster::find($nurtureInfo->id);
+
+        return response()->json(NutureMonsterResource::make($nurtureInfo));
     }
 
     // 育成モンスター情報更新
@@ -106,6 +108,7 @@ class MonsterController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
             'id' => ['required', 'integer'],
+            'monster_id' => ['integer'],
             'level' => ['integer'],
             'exp' => ['integer'],
             'stomach_vol' => ['integer'],
@@ -123,6 +126,9 @@ class MonsterController extends Controller
             // トランザクション処理
             DB::transaction(function () use ($request, $monsterInfo) {
                 // 渡ってきたデータごとに上書き処理
+                if (isset($request->monster_id)) {  // モンスターID
+                    $monsterInfo->monster_id = $request->monster_id;
+                }
                 if (isset($request->level)) {       // レベル
                     $monsterInfo->level = $request->level;
                 }
@@ -198,6 +204,7 @@ class MonsterController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
             'nurture_id' => ['required', 'integer'],
+            'stomach_vol' => ['required', 'integer'],
             'used_vol' => ['required', 'integer'],
             'exp' => ['required', 'integer'],
         ]);
@@ -220,13 +227,12 @@ class MonsterController extends Controller
                     'get_exp' => $request->exp - $monsterInfo->exp,
                 ]);
 
-                var_dump($userInfo->food_vol, $request->used_vol);
-
                 // 食料残量更新
                 $userInfo->food_vol = $request->used_vol;
 
                 // レベル・経験値の更新
                 $result = $this->CalcExercise($request->nurture_id, $monsterInfo->level, $request->exp);
+                $monsterInfo->stomach_vol = $request->stomach_vol;
                 $monsterInfo->level = $result[0];
                 $monsterInfo->exp = $result[1];
 
@@ -274,35 +280,54 @@ class MonsterController extends Controller
     {
         // バリデーション
         $validator = Validator::make($request->all(), [
-            'monster_id' => ['required', 'integer'],
+            'nurture_id' => ['required', 'integer'],
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        // ユーザの育成中・済のモンスターIDを取得
-        $userMonsters = NurtureMonster::where('user_id', $request->user()->id)
-            ->where('state', [2, 3])->get()->toArray();
-        $idList = array_column($userMonsters, 'monster_id');
+        // 現育成モンスターの情報を取得
+        $nowMonster = NurtureMonster::findOrFail($request->nurture_id);
 
-        // 未所持モンスターIDの抽選
-        $monsterList = Monster::select('id')->whereNotIn('id', $idList)->get()->toArray();
-        $lotteryID = array_rand(array_column($monsterList, 'id'));
+        try {
+            // トランザクション処理
+            $response = DB::transaction(function () use ($request, $nowMonster) {
 
-        // 親2をランダムに選出
-        $idList = Monster::select('id')->get()->toArray();
-        $randomID = array_rand(array_column($idList, 'id'));
+                // ユーザの育成中・済のモンスターIDを取得
+                $userMonsters = NurtureMonster::where('user_id', $request->user()->id)
+                    ->where('state', [2, 3])->get()->toArray();
+                $idList = array_column($userMonsters, 'monster_id');
 
-        // 新モンスターを登録
-        $nurtureMonster = NurtureMonster::create([
-            'user_id' => $request->user()->id,
-            'monster_id' => $lotteryID,
-            'parent1_id' => $request->monster_id,
-            'parent2_id' => $randomID,
-            'state' => 1
-        ]);
+                // 未所持モンスターIDの抽選
+                $monsterList = Monster::select('id')->whereNotIn('id', $idList)->get()->toArray();
+                $lotteryID = array_rand(array_column($monsterList, 'id'));
 
-        // モンスター情報を返却
-        return response()->json(NutureMonsterResource::make($nurtureMonster));
+                // 親2をランダムに選出
+                $idList = Monster::select('id')->get()->toArray();
+                $randomID = array_rand(array_column($idList, 'id'));
+
+                // 新モンスターを登録
+                $nurtureMonster = NurtureMonster::create([
+                    'user_id' => $request->user()->id,
+                    'monster_id' => $lotteryID,
+                    'parent1_id' => $nowMonster->monster_id,
+                    'parent2_id' => $randomID,
+                    'state' => 1
+                ]);
+
+                $nurtureMonster = NurtureMonster::find($nurtureMonster->id);
+
+                // 現育成モンスターを育成完了済みに変更
+                $nowMonster->state = 3;
+                $nowMonster->save();
+
+                return $nurtureMonster;
+            });
+
+            // モンスター情報を返却
+            return response()->json(NutureMonsterResource::make($response));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

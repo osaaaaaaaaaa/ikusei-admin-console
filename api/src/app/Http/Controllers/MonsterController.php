@@ -132,7 +132,7 @@ class MonsterController extends Controller
                 if (isset($request->monster_id)) {  // モンスターID
                     $monsterInfo->monster_id = $request->monster_id;
                 }
-                if (isset($request->name)) {  // モンスターID
+                if (isset($request->name)) {        // 名前
                     $monsterInfo->name = $request->name;
                 }
                 if (isset($request->level)) {       // レベル

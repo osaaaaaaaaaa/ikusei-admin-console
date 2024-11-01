@@ -14,6 +14,7 @@ class MonsterResource extends JsonResource
             'name' => $this->name,
             'text' => $this->text,
             'evo_lv' => $this->evo_lv,
+            'evo_id' => $this->evo_id,
             'rarity' => $this->rarity
         ];
     }

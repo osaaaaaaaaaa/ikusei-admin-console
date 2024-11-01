@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->integer('level')->default(1);              // レベル
             $table->integer('stomach_vol')->default(20);       // 満腹度
             $table->tinyInteger('state')->index();                  // 育成状態 [1:卵 2:育成中 3:育成完了 4:死亡]
-            $table->timestamps();
-
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->index(['user_id', 'state']);
         });
     }

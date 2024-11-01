@@ -29,7 +29,8 @@ class MonsterTableSeeder extends Seeder
                 'name' => $values[0],
                 'text' => $values[1],
                 'evo_lv' => (int)$values[2],
-                'rarity' => $values[3],
+                'evo_id' => (int)$values[3],
+                'rarity' => $values[4]
             ]);
         }
     }

@@ -65,7 +65,7 @@ Authorization: Bearer 1|GbN4jBJvD3laYDR9cFvBcnqq5NpUunpYbgn3yhOhbde236e1
 ### 育成中のモンスター情報取得
 GET http://localhost:8000/api/monsters/nurturing
 Accept: application/json
-Authorization: Bearer 4|8HhIGSbzkdJ7BlF7LqbP5Gy6swqSrAyLKiwb5l0026f517c3
+Authorization: Bearer 1|a5NQSiy6l7RrxMnMyq0RxKvLeNlECgV0nILXMtj31786fedc
 
 ### 育成済モンスターを新着順に30件取得
 GET http://localhost:8000/api/monsters/new30
@@ -76,7 +76,7 @@ Authorization: Bearer 1|GbN4jBJvD3laYDR9cFvBcnqq5NpUunpYbgn3yhOhbde236e1
 POST http://localhost:8000/api/monsters/init-store
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer 4|8HhIGSbzkdJ7BlF7LqbP5Gy6swqSrAyLKiwb5l0026f517c3
+Authorization: Bearer 9|UtFxai1FhXd6KBKpozL1DyX79MbUUqveCZqSBl7Qca0e3ab3
 
 {
     "name": "sample"

@@ -90,11 +90,13 @@ class MonsterController extends Controller
             }
         }
 
+        $monsterInfo = Monster::find(1);
+
         $nurtureInfo = NurtureMonster::create([
             'user_id' => $request->user()->id,
             'monster_id' => 1,
-            'name' => $request->name,
-            'state' => 2
+            'name' => $monsterInfo->name,
+            'state' => 1,
         ]);
 
         $nurtureInfo = NurtureMonster::find($nurtureInfo->id);
@@ -302,6 +304,9 @@ class MonsterController extends Controller
                 $monsterList = Monster::select('id')->whereNotIn('id', $idList)->get()->toArray();
                 $lotteryID = array_rand(array_column($monsterList, 'id'));
 
+                // 抽選されたモンスターの情報を取得
+                $randMonster = Monster::find($lotteryID);
+
                 // 親2をランダムに選出
                 $idList = Monster::select('id')->get()->toArray();
                 $randomID = array_rand(array_column($idList, 'id'));
@@ -312,6 +317,7 @@ class MonsterController extends Controller
                     'monster_id' => $lotteryID,
                     'parent1_id' => $nowMonster->monster_id,
                     'parent2_id' => $randomID,
+                    'name' => $randMonster->name,
                     'state' => 1
                 ]);
 

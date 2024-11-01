@@ -111,6 +111,7 @@ class MonsterController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => ['required', 'integer'],
             'monster_id' => ['integer'],
+            'name' => ['string', 'max:128'],
             'level' => ['integer'],
             'exp' => ['integer'],
             'stomach_vol' => ['integer'],
@@ -130,6 +131,9 @@ class MonsterController extends Controller
                 // 渡ってきたデータごとに上書き処理
                 if (isset($request->monster_id)) {  // モンスターID
                     $monsterInfo->monster_id = $request->monster_id;
+                }
+                if (isset($request->name)) {  // モンスターID
+                    $monsterInfo->name = $request->name;
                 }
                 if (isset($request->level)) {       // レベル
                     $monsterInfo->level = $request->level;

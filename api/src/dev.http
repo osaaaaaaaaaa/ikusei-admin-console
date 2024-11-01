@@ -1,5 +1,5 @@
 ### ユーザー登録
-POST http://localhost:8000/api/users/store
+POST https://ikusei.japaneast.cloudapp.azure.com/api/users/store
 Content-Type: application/json
 Accept: application/json
 
@@ -53,9 +53,9 @@ Authorization: Bearer 1|GbN4jBJvD3laYDR9cFvBcnqq5NpUunpYbgn3yhOhbde236e1
 ########################################################################################
 
 ### 全モンスター情報の取得
-GET http://localhost:8000/api/monsters
+GET https://ikusei.japaneast.cloudapp.azure.com/api/monsters
 Accept: application/json
-Authorization: Bearer 1|Z7nUeGEjpCcQHi5fGymT3y6ftNcUahZnMBUo7qX36eaf52ba
+Authorization: Bearer 1|FzjnVP34sHl2dWAsX9EofYPz6pR4oFUjo1BJ9tZv9d406f3a
 
 ### 育成完了したモンスターIDの取得
 GET http://localhost:8000/api/monsters/nurtured

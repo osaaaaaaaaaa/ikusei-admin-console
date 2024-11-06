@@ -26,13 +26,14 @@ class MonsterController extends Controller
         return response()->json(MonsterResource::collection($monsterList));
     }
 
-    // 育成完了したモンスターIDの取得
+    // 育成中・完了したモンスターIDの取得
     public function nurtured(Request $request)
     {
         $monsterList = NurtureMonster::select('monster_id')
-            ->where('user_id', $request->user()->id)->where('state', 3)->get()->toArray();
+            ->where('user_id', $request->user()->id)->whereIn('state', [2, 3])->get()->toArray();
 
         $idList = array_column($monsterList, 'monster_id');
+        $idList = array_unique($idList);
 
         return response()->json($idList);
     }

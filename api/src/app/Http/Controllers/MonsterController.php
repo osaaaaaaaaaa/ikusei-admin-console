@@ -132,6 +132,16 @@ class MonsterController extends Controller
             DB::transaction(function () use ($request, $monsterInfo) {
                 // 渡ってきたデータごとに上書き処理
                 if (isset($request->monster_id)) {  // モンスターID
+                    // 進化前の育成情報を登録
+                    NurtureMonster::create([
+                        'user_id' => $request->user()->id,
+                        'monster_id' => $monsterInfo->monster_id,
+                        'parent1_id' => $monsterInfo->parent1_id,
+                        'parent2_id' => $monsterInfo->parent2_id,
+                        'name' => $monsterInfo->name,
+                        'state' => 3,
+                    ]);
+
                     $monsterInfo->monster_id = $request->monster_id;
                 }
                 if (isset($request->name)) {        // 名前

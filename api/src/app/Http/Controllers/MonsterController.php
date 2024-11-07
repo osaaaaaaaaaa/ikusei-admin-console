@@ -34,6 +34,7 @@ class MonsterController extends Controller
 
         $idList = array_column($monsterList, 'monster_id');
         $idList = array_unique($idList);
+        $idList = array_values($idList);
 
         return response()->json($idList);
     }
